@@ -4,6 +4,4 @@ const thread = new Thread(() => {
 })
 thread.start()
 thread.on('resolved', result => console.log('Resolved: ' + result))
-thread.on('rejected', error => console.log('Rejected: ' + error))
-thread.on('interrupt', () => console.log('Interrupted'))
-console.log(thread.ended)
+thread.on('rejected', () => console.log('never be called'))

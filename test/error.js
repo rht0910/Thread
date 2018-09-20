@@ -1,8 +1,8 @@
 const Thread = require('..')
 const thread = new Thread(async () => {
-  console.log('resolve')
+  Promise.reject('Promsie reject')
+  throw new Error('Test')
 })
 thread.start()
-thread.on('resolved', result => console.log('Resolved: ' + result))
+thread.on('resolved', () => console.log('never'))
 thread.on('rejected', error => console.log('Rejected: ' + error))
-thread.on('interrupt', () => console.log('Interrupted'))
