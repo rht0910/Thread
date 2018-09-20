@@ -1,6 +1,10 @@
 //const IllegalStateError = require('./error/IllegalStateError')
 const EventEmitter = require('events').EventEmitter
 
+/**
+ * Provides async Thread.
+ * @see #start() - Start the execution of the thread.
+ */
 class Thread extends EventEmitter {
   /**
    * @param {Promise<any>} __ Promise
@@ -62,7 +66,7 @@ class Thread extends EventEmitter {
    * @see #start()
    */
   run() {
-    this.runFunction()//.next()
+    this.runFunction()
   }
 
   /**
