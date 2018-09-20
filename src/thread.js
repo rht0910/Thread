@@ -20,20 +20,29 @@ class Thread extends EventEmitter {
    */
   constructor(__) {
     super()
-    this.runFunction = function*() {
-      this.on('interrupt', () => { return false })
-      process.nextTick(async () => {
+    this.ended = false
+    this.started = false
+    this.modified = __ ? false : true
+    this.init(__)
+  }
+
+  init(__) {
+    const self = this
+    this.runFunction = async function* () {
+      setImmediate(async function* () { // <- https://cdn.discordapp.com/attachments/472038214308462592/492202874353221632/unknown.png
+        self.on('interrupt', () => { return false })
         if (typeof __ == Promise)
           __()
-            .then(result => this.emit('resolved', result))
-            .catch(error => this.emit('rejected', error))
-            .finally(() => this.ended = true)
+            .then(result => self.emit('resolved', result))
+            .catch(error => self.emit('rejected', error))
+            .finally(() => self.ended = true)
         else {
           try {
-            this.emit('resolved', await __())
+            self.emit('resolved', await __())
           } catch(e) {
-            this.emit('rejected', e)
+            self.emit('rejected', e)
           }
+          self.ended = true
         }
       })
     }
@@ -56,7 +65,7 @@ class Thread extends EventEmitter {
    * @see #start()
    */
   run() {
-    return this.runFunction().next()
+    this.runFunction().next()
   }
 
   /**
@@ -67,13 +76,15 @@ class Thread extends EventEmitter {
    */
   async start() {
     this.started = true
-    return await this.run()
+    if (!this.modified) return await this.run()
+    this.init(this.run)
+    this.runFunction()
   }
 
   /**
    * Interrupt current thread.
    * 
-   * @throws IllegalStateError - When called this method before calling start method.
+   * @throws IllegalStateError
    */
   interrupt() {
     if (!this.started) throw new IllegalStateError('Interrupt method called before calling start method.')
@@ -85,7 +96,7 @@ class Thread extends EventEmitter {
    * Interrupt current thread in <time> ms.
    *
    * @param {number} time Timeout time in milliseconds
-   * @throws IllegalStateError - When called this method before calling start method.
+   * @throws IllegalStateError
    */
   interruptIn(time) {
     if (!this.started) throw new IllegalStateError('Interrupt method called before calling start method.')
