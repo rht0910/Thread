@@ -1,0 +1,22 @@
+{
+  "name": "thread",
+  "version": "1.0.0",
+  "description": "Java-like Thread class",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rht0910/Thread.git"
+  },
+  "keywords": [
+    "thread"
+  ],
+  "author": "rht0910",
+  "license": "LGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/rht0910/Thread/issues"
+  },
+  "homepage": "https://github.com/rht0910/Thread#readme"
+}
