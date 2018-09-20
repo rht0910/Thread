@@ -77,7 +77,7 @@ class Thread extends EventEmitter {
    */
   async start() {
     this.started = true
-    return await this.run()
+    return await this.run(arguments)
   }
 
   /**
