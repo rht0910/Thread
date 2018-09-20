@@ -1,4 +1,4 @@
-const IllegalStateError = require('./error/IllegalStateError')
+//const IllegalStateError = require('./error/IllegalStateError')
 const EventEmitter = require('events').EventEmitter
 
 class Thread extends EventEmitter {
@@ -22,29 +22,26 @@ class Thread extends EventEmitter {
     super()
     this.ended = false
     this.started = false
-    this.modified = __ ? false : true
     this.init(__)
   }
 
   init(__) {
     const self = this
-    this.runFunction = async function* () {
-      setImmediate(async function* () { // <- https://cdn.discordapp.com/attachments/472038214308462592/492202874353221632/unknown.png
-        self.on('interrupt', () => { return false })
-        if (typeof __ == Promise)
-          __()
-            .then(result => self.emit('resolved', result))
-            .catch(error => self.emit('rejected', error))
-            .finally(() => self.ended = true)
-        else {
-          try {
-            self.emit('resolved', await __())
-          } catch(e) {
-            self.emit('rejected', e)
-          }
-          self.ended = true
+    this.runFunction = async function () {
+      //self.on('interrupt', () => { return false })
+      if (typeof __ == Promise)
+        __()
+          .then(result => self.emit('resolved', result))
+          .catch(error => self.emit('rejected', error))
+          .finally(() => self.ended = true)
+      else {
+        try {
+          self.emit('resolved', await __())
+        } catch(e) {
+          self.emit('rejected', e)
         }
-      })
+        self.ended = true
+      }
     }
   }
 
@@ -65,7 +62,7 @@ class Thread extends EventEmitter {
    * @see #start()
    */
   run() {
-    this.runFunction().next()
+    this.runFunction()//.next()
   }
 
   /**
@@ -76,9 +73,7 @@ class Thread extends EventEmitter {
    */
   async start() {
     this.started = true
-    if (!this.modified) return await this.run()
-    this.init(this.run)
-    this.runFunction()
+    return await this.run()
   }
 
   /**
@@ -86,11 +81,13 @@ class Thread extends EventEmitter {
    * 
    * @throws IllegalStateError
    */
+  /*
   interrupt() {
     if (!this.started) throw new IllegalStateError('Interrupt method called before calling start method.')
     if (this.ended) throw new IllegalStateError('Thread has already resolved.')
     this.emit('interrupt', false)
   }
+  */
 
   /**
    * Interrupt current thread in <time> ms.
@@ -98,15 +95,16 @@ class Thread extends EventEmitter {
    * @param {number} time Timeout time in milliseconds
    * @throws IllegalStateError
    */
+  /*
   interruptIn(time) {
-    if (!this.started) throw new IllegalStateError('Interrupt method called before calling start method.')
     if (this.ended) throw new IllegalStateError('Thread has already resolved.')
     const timer = setTimeout(() => {
       this.interrupt()
     }, time)
     timer
-    this.on('interrupt' || 'interrupt' || 'rejected' || 'resolved', () => clearTimeout(timer))
+    this.on('interrupt' || 'rejected' || 'resolved', () => clearTimeout(timer))
   }
+  */
 }
 
 module.exports = Thread
