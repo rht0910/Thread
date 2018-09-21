@@ -18,5 +18,6 @@
   "bugs": {
     "url": "https://github.com/rht0910/Thread/issues"
   },
-  "homepage": "https://github.com/rht0910/Thread#readme"
+  "homepage": "https://github.com/rht0910/Thread#readme",
+  "devDependencies": {}
 }

@@ -31,16 +31,16 @@ class Thread extends EventEmitter {
 
   init(__) {
     const self = this
-    this.runFunction = async function () {
+    this.runFunction = function () {
       //self.on('interrupt', () => { return false })
       if (typeof __ == Promise)
-        __()
+        __
           .then(result => self.emit('resolved', result))
           .catch(error => self.emit('rejected', error))
           .finally(() => self.ended = true)
       else {
         try {
-          self.emit('resolved', await __())
+          self.emit('resolved', __())
         } catch(e) {
           self.emit('rejected', e)
         }
@@ -74,10 +74,25 @@ class Thread extends EventEmitter {
    * 
    * @see #run()
    * @see #constructor()
+   * @see #startSync()
+   * @returns {any} Something
    */
   async start() {
     this.started = true
     return await this.run(arguments)
+  }
+
+  /**
+   * Start the execution of the thread without async.
+   * 
+   * @see #run()
+   * @see #constructor()
+   * @see #start()
+   * @returns {any} Something
+   */
+  startSync() {
+    this.started = true
+    return this.run(arguments)
   }
 
   /**
