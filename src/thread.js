@@ -79,7 +79,7 @@ class Thread extends EventEmitter {
    */
   async start() {
     this.started = true
-    return await this.run(arguments)
+    return await this.run(...arguments)
   }
 
   /**
@@ -92,7 +92,7 @@ class Thread extends EventEmitter {
    */
   startSync() {
     this.started = true
-    return this.run(arguments)
+    return this.run(...arguments)
   }
 
   /**
