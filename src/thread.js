@@ -79,20 +79,22 @@ class Thread extends EventEmitter {
    */
   async start() {
     this.started = true
-    return await this.run(...arguments)
-  }
-
-  /**
-   * Start the execution of the thread without async.
-   * 
-   * @see #run()
-   * @see #constructor()
-   * @see #start()
-   * @returns {any} Something
-   */
-  startSync() {
-    this.started = true
-    return this.run(...arguments)
+    const self = this
+    return (function() {
+      if (typeof self.run == Promise)
+        self.run(...arguments)
+          .then(result => self.emit('resolved', result))
+          .catch(error => self.emit('rejected', error))
+          .finally(() => self.ended = true)
+      else {
+        try {
+          self.emit('resolved', self.run(...arguments))
+        } catch(e) {
+          self.emit('rejected', e)
+        }
+        self.ended = true
+      }
+    }())
   }
 
   /**
