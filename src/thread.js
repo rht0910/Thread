@@ -1,13 +1,13 @@
 //const IllegalStateError = require('./error/IllegalStateError')
-const EventEmitter = require('events').EventEmitter
+const Runnable = require('./Runnable')
 
 /**
  * Provides async Thread.
  * @see #start() - Start the execution of the thread.
  */
-class Thread extends EventEmitter {
+class Thread extends Runnable {
   /**
-   * @param {Promise<any>} __ Promise
+   * @param {Function|Runnable|Promise<any>} __
    * @example const thread = new Thread(() => {
    *     console.log('test')
    *   })
@@ -23,7 +23,7 @@ class Thread extends EventEmitter {
    * @see #run()
    */
   constructor(__) {
-    super()
+    super(__)
     this.ended = false
     this.started = false
     this.init(__)
@@ -82,13 +82,13 @@ class Thread extends EventEmitter {
     const self = this
     return (function() {
       if (typeof self.run == Promise)
-        self.run(...arguments)
+        self.run()
           .then(result => self.emit('resolved', result))
           .catch(error => self.emit('rejected', error))
           .finally(() => self.ended = true)
       else {
         try {
-          self.emit('resolved', self.run(...arguments))
+          self.emit('resolved', self.run())
         } catch(e) {
           self.emit('rejected', e)
         }

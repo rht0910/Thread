@@ -1,5 +1,5 @@
 const Thread = require('..')
-const thread = new Thread(async () => {
+const thread = new Thread.Thread(async () => {
   Promise.reject('Promsie reject')
   throw new Error('Test')
 })

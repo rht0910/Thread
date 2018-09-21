@@ -1,5 +1,4 @@
 const Thread = require('..')
-const outside = 'test'
-module.exports = new Thread(() => {
-  console.log(outside)
+module.exports = new Thread.Thread(() => {
+  console.log('Instant')
 }).start()
