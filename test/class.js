@@ -1,5 +1,5 @@
 const Thread = require('..')
-class Test extends Thread.Thread {
+class Test extends Thread {
   constructor(something) {
     super()
     this.something = something

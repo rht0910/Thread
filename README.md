@@ -7,11 +7,11 @@ Java-like Thread for Node.js
 ### Using Runnable
 
 ```javascript
-const Thread = require('thread')
-const runnable = new Thread.Runnable(() => {
+const Thread = require('thread/Runnable')
+const runnable = new Runnable(() => {
   console.log('Using Runnable class')
 })
-const thread = new Thread.Thread(runnable.run)
+const thread = new Thread(runnable.run)
 thread.start()
 thread.on('resolved', result => console.log('Resolved: ' + result))
 thread.on('rejected', () => console.log('never'))
@@ -21,7 +21,7 @@ thread.on('rejected', () => console.log('never'))
 
 ```javascript
 const Thread = require('thread')
-const thread = new Thread.Thread(() => {
+const thread = new Thread(() => {
   console.log('test')
 })
 thread.start()
@@ -42,7 +42,7 @@ module.exports = new Thread(() => {
 
 ```javascript
 const Thread = require('thread')
-class Test extends Thread.Thread {
+class Test extends Thread {
   constructor(something) {
     super()
     this.something = something
@@ -60,4 +60,9 @@ thread.on('rejected', () => console.log('never be called'))
 
 And more on test folder.
 
-**Note: Can't use Class extends Runnable, it's not working. \(Will be available on future\) **
+**Note: Can't use Class extends Runnable, it's not working. \(Will be available on future\)**
+
+## I really need this?
+
+Nope.
+You should use async(-await) if you can.

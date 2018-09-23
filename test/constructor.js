@@ -1,5 +1,5 @@
 const Thread = require('..')
-const thread = new Thread.Thread(() => {
+const thread = new Thread(() => {
   console.log('test')
 })
 thread.start()

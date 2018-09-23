@@ -1,4 +1,1 @@
-module.exports = {
-  Thread: require('./src/Thread'),
-  Runnable: require('./src/Runnable'),
-}
+module.exports = require('./lib/Thread')
