@@ -5,4 +5,7 @@ const thread = new Thread(async () => {
 })
 thread.start()
 thread.on('resolved', () => console.log('never'))
-thread.on('rejected', error => console.log('Rejected: ' + error))
+thread.on('rejected', error => {
+  console.log('Rejected: ' + error.error)
+  console.log('stacktrace: ' + error.stack)
+})
