@@ -1,6 +1,6 @@
 # Thread
 
-Java-like Thread for Node.js
+Java-like Thread for Node.js, using child_process.
 
 ## Examples
 
