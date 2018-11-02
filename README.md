@@ -64,5 +64,8 @@ And more on test folder.
 
 ## I really need this?
 
-Nope.
-You should use async(-await) if you can.
+I don't know.
+If you want to pass a circular object, you should use async-await.
+If otherwise, may you can use this.
+
+If you encountered error, please issue ticket and use async-await!
